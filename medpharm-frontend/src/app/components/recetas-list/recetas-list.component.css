@@ -1,0 +1,109 @@
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.chip {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 7px 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.chip:hover { background: var(--peach-soft); color: var(--ink); }
+.chip:focus-visible { outline: 3px solid var(--lav-soft); outline-offset: 2px; }
+
+.chip-active {
+  background: var(--sage-soft);
+  border-color: var(--sage);
+  color: var(--sage-ink);
+}
+
+.chip-count {
+  font-size: 0.75rem;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 999px;
+  padding: 1px 8px;
+}
+
+.table-card { padding: 8px 8px; overflow-x: auto; }
+
+.estado-vacio {
+  text-align: center;
+  color: var(--ink-soft);
+  padding: 40px 16px;
+  margin: 0;
+}
+
+.tabla { width: 100%; border-collapse: collapse; font-size: 0.93rem; }
+
+.tabla th {
+  text-align: left;
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.tabla td {
+  padding: 14px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+
+.tabla tbody tr:last-child td { border-bottom: none; }
+.tabla tbody tr:hover { background: #fffaf2; }
+
+.meds { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.qty { color: var(--ink-soft); font-size: 0.85rem; }
+
+.acciones { display: flex; gap: 8px; flex-wrap: wrap; }
+
+/* ---------- Responsive: la tabla se apila como tarjetas ---------- */
+@media (max-width: 760px) {
+  .tabla thead { display: none; }
+
+  .tabla, .tabla tbody, .tabla tr, .tabla td { display: block; width: 100%; }
+
+  .tabla tr {
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    margin: 10px 0;
+    padding: 6px 4px;
+    background: var(--surface);
+  }
+
+  .tabla td {
+    border-bottom: none;
+    padding: 8px 12px;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    text-align: right;
+  }
+
+  .tabla td::before {
+    content: attr(data-label);
+    font-family: var(--font-title);
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    text-align: left;
+  }
+
+  .acciones { justify-content: flex-end; }
+}

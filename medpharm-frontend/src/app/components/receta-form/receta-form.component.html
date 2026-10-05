@@ -1,0 +1,113 @@
+<section class="page">
+  <div class="page-header">
+    <div>
+      <h1>Nueva receta</h1>
+      <p>Registre al paciente y agregue los medicamentos prescritos.</p>
+    </div>
+    <a class="btn btn-ghost" routerLink="/recetas">← Volver</a>
+  </div>
+
+  @if (errorMensaje()) {
+    <div class="alert alert-error" role="alert">{{ errorMensaje() }}</div>
+  }
+
+  <form class="card" [formGroup]="form" (ngSubmit)="enviar()" novalidate>
+    <div class="field">
+      <label for="pacienteNombre">Nombre del paciente</label>
+      <input
+        id="pacienteNombre"
+        type="text"
+        class="input"
+        formControlName="pacienteNombre"
+        placeholder="Ej. María Fernández Solano"
+        [class.is-invalid]="pacienteInvalido()"
+      />
+      @if (pacienteInvalido()) {
+        @if (form.controls.pacienteNombre.hasError('required')) {
+          <p class="error-text">El nombre del paciente es requerido.</p>
+        } @else if (form.controls.pacienteNombre.hasError('minlength')) {
+          <p class="error-text">El nombre debe tener al menos 5 caracteres.</p>
+        }
+      }
+    </div>
+
+    <div class="renglones-head">
+      <h2>Medicamentos</h2>
+      <button type="button" class="btn btn-ghost btn-sm" (click)="agregarRenglon()">+ Agregar medicamento</button>
+    </div>
+
+    <div formArrayName="detalles" class="renglones">
+      @for (detalle of detalles.controls; track detalle; let i = $index) {
+        <div class="renglon" [formGroupName]="i">
+          <div class="field campo-med">
+            <label [for]="'med-' + i">Medicamento</label>
+            <select
+              [id]="'med-' + i"
+              class="input"
+              formControlName="medicamentoId"
+              [class.is-invalid]="detalle.controls.medicamentoId.invalid && detalle.controls.medicamentoId.touched"
+            >
+              <option [ngValue]="null" disabled>Seleccione un medicamento…</option>
+              @for (m of medicamentos(); track m.id) {
+                <option [ngValue]="m.id">{{ m.nombre }}</option>
+              }
+            </select>
+            @if (detalle.controls.medicamentoId.invalid && detalle.controls.medicamentoId.touched) {
+              <p class="error-text">Seleccione un medicamento.</p>
+            } @else if (stockDe(detalle.controls.medicamentoId.value) !== null) {
+              <p class="hint-text">Stock disponible: {{ stockDe(detalle.controls.medicamentoId.value) }}</p>
+            }
+          </div>
+
+          <div class="field campo-cant">
+            <label [for]="'cant-' + i">Cantidad</label>
+            <input
+              [id]="'cant-' + i"
+              type="number"
+              class="input"
+              formControlName="cantidad"
+              min="1"
+              step="1"
+              [class.is-invalid]="detalle.controls.cantidad.invalid && detalle.controls.cantidad.touched"
+            />
+            @if (detalle.controls.cantidad.invalid && detalle.controls.cantidad.touched) {
+              @if (detalle.controls.cantidad.hasError('required')) {
+                <p class="error-text">La cantidad es requerida.</p>
+              } @else if (detalle.controls.cantidad.hasError('positivo')) {
+                <p class="error-text">Debe ser un número entero mayor a 0.</p>
+              }
+            }
+          </div>
+
+          <div class="field campo-dosis">
+            <label [for]="'dosis-' + i">Dosis indicada</label>
+            <input
+              [id]="'dosis-' + i"
+              type="text"
+              class="input"
+              formControlName="dosisIndicada"
+              placeholder="Ej. 1 tableta cada 8 horas"
+            />
+          </div>
+
+          <button
+            type="button"
+            class="btn btn-danger btn-sm quitar"
+            [disabled]="detalles.length === 1"
+            (click)="quitarRenglon(i)"
+            aria-label="Quitar este medicamento"
+          >
+            Quitar
+          </button>
+        </div>
+      }
+    </div>
+
+    <div class="acciones">
+      <a class="btn btn-ghost" routerLink="/recetas">Cancelar</a>
+      <button type="submit" class="btn btn-primary" [disabled]="enviando()">
+        {{ enviando() ? 'Guardando…' : 'Registrar receta' }}
+      </button>
+    </div>
+  </form>
+</section>

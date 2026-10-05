@@ -1,0 +1,109 @@
+<section class="page">
+  <div class="page-header">
+    <div>
+      <h1>Recetas médicas</h1>
+      <p>
+        {{ pendientes() }} pendientes · {{ despachadas() }} despachadas · {{ recetas().length }} en total
+      </p>
+    </div>
+    @if (auth.rol() === 'MEDICO') {
+      <a class="btn btn-primary" routerLink="/nueva-receta">+ Nueva receta</a>
+    }
+  </div>
+
+  <div class="filtros" role="tablist" aria-label="Filtrar recetas por estado">
+    @for (f of filtros; track f) {
+      <button
+        type="button"
+        role="tab"
+        class="chip"
+        [class.chip-active]="filtro() === f"
+        [attr.aria-selected]="filtro() === f"
+        (click)="seleccionarFiltro(f)"
+      >
+        {{ f === 'TODAS' ? 'Todas' : f.charAt(0) + f.slice(1).toLowerCase() }}
+        <span class="chip-count">{{ contar(f) }}</span>
+      </button>
+    }
+  </div>
+
+  @if (errorMensaje()) {
+    <div class="alert alert-error" role="alert">{{ errorMensaje() }}</div>
+  }
+
+  @if (auth.rol() === 'MEDICO' && !cargando()) {
+    <div class="alert alert-info">
+      Solo el personal farmacéutico puede despachar o cancelar recetas.
+    </div>
+  }
+
+  <div class="card table-card">
+    @if (cargando()) {
+      <p class="estado-vacio">Cargando recetas…</p>
+    } @else if (recetasFiltradas().length === 0) {
+      <p class="estado-vacio">No hay recetas para mostrar con este filtro.</p>
+    } @else {
+      <table class="tabla">
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Paciente</th>
+            <th>Médico</th>
+            <th>Medicamentos</th>
+            <th>Emitida</th>
+            <th>Estado</th>
+            @if (puedeCambiarEstado()) {
+              <th>Acciones</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (receta of recetasFiltradas(); track receta.id) {
+            <tr>
+              <td data-label="Código"><strong>{{ receta.codigoReceta }}</strong></td>
+              <td data-label="Paciente">{{ receta.pacienteNombre }}</td>
+              <td data-label="Médico">{{ receta.medicoNombre }}</td>
+              <td data-label="Medicamentos">
+                <ul class="meds">
+                  @for (d of receta.detalles; track d.id) {
+                    <li>{{ d.medicamentoNombre }} <span class="qty">× {{ d.cantidad }}</span></li>
+                  }
+                </ul>
+              </td>
+              <td data-label="Emitida">{{ receta.fechaEmision | date: 'dd/MM/yyyy HH:mm' }}</td>
+              <td data-label="Estado">
+                <span [class]="claseBadge(receta.estado)">{{ receta.estado }}</span>
+              </td>
+              @if (puedeCambiarEstado()) {
+                <td data-label="Acciones">
+                  @if (receta.estado === 'PENDIENTE') {
+                    <div class="acciones">
+                      <button
+                        type="button"
+                        class="btn btn-success btn-sm"
+                        [disabled]="procesandoId() === receta.id"
+                        (click)="cambiarEstado(receta, 'DESPACHADA')"
+                      >
+                        Despachar
+                      </button>
+                      <button
+                        type="button"
+                        class="btn btn-danger btn-sm"
+                        [disabled]="procesandoId() === receta.id"
+                        (click)="cambiarEstado(receta, 'CANCELADA')"
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  } @else {
+                    <span class="hint-text">—</span>
+                  }
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+</section>
