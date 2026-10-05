@@ -1,0 +1,29 @@
+@if (auth.estaAutenticado()) {
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" routerLink="/recetas">
+        <span class="brand-mark" aria-hidden="true">✚</span>
+        <span class="brand-name">MedPharm <em>Express</em></span>
+      </a>
+
+      <nav class="nav" aria-label="Navegación principal">
+        <a routerLink="/recetas" routerLinkActive="active">Recetas</a>
+        @if (auth.rol() === 'MEDICO') {
+          <a routerLink="/nueva-receta" routerLinkActive="active">Nueva receta</a>
+        }
+      </nav>
+
+      <div class="user">
+        <div class="user-info">
+          <span class="user-name">{{ auth.username() }}</span>
+          <span class="user-role">{{ auth.rol() === 'MEDICO' ? 'Médico' : 'Farmacéutico' }}</span>
+        </div>
+        <button type="button" class="btn btn-ghost btn-sm" (click)="logout()">Cerrar sesión</button>
+      </div>
+    </div>
+  </header>
+}
+
+<main>
+  <router-outlet />
+</main>

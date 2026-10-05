@@ -1,0 +1,61 @@
+<section class="login-wrap">
+  <div class="login-card card">
+    <div class="login-head">
+      <span class="login-mark" aria-hidden="true">✚</span>
+      <h1>MedPharm <em>Express</em></h1>
+      <p>Gestión de recetas médicas y despacho de farmacia</p>
+    </div>
+
+    @if (errorMensaje()) {
+      <div class="alert alert-error" role="alert">{{ errorMensaje() }}</div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="enviar()" novalidate>
+      <div class="field">
+        <label for="username">Usuario</label>
+        <input
+          id="username"
+          type="text"
+          class="input"
+          formControlName="username"
+          autocomplete="username"
+          [class.is-invalid]="campoInvalido('username')"
+        />
+        @if (campoInvalido('username')) {
+          <p class="error-text">El usuario es requerido.</p>
+        }
+      </div>
+
+      <div class="field">
+        <label for="password">Contraseña</label>
+        <input
+          id="password"
+          type="password"
+          class="input"
+          formControlName="password"
+          autocomplete="current-password"
+          [class.is-invalid]="campoInvalido('password')"
+        />
+        @if (campoInvalido('password')) {
+          @if (form.controls.password.hasError('required')) {
+            <p class="error-text">La contraseña es requerida.</p>
+          } @else if (form.controls.password.hasError('minlength')) {
+            <p class="error-text">La contraseña debe tener al menos 6 caracteres.</p>
+          }
+        }
+      </div>
+
+      <button type="submit" class="btn btn-primary submit" [disabled]="cargando()">
+        {{ cargando() ? 'Ingresando…' : 'Iniciar sesión' }}
+      </button>
+    </form>
+
+    <aside class="demo">
+      <p class="demo-title">Usuarios de prueba</p>
+      <ul>
+        <li><code>dra.salas</code> / <code>medico123</code> <span>Médico</span></li>
+        <li><code>farma.rojas</code> / <code>farma123</code> <span>Farmacéutico</span></li>
+      </ul>
+    </aside>
+  </div>
+</section>
