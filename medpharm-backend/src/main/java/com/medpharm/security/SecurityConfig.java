@@ -27,7 +27,6 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
     private final AuthTokenFilter authTokenFilter;
 
     public SecurityConfig(AuthTokenFilter authTokenFilter) {
@@ -50,20 +49,20 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // Necesario para que la consola H2 (usa frames) se vea en el navegador
+
                 .headers(h -> h.frameOptions(f -> f.sameOrigin()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.OPTIONS, "/**")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/api/v1/auth/**")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
-                        // Solo los médicos emiten recetas; solo los farmacéuticos cambian su estado
+
                         .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.POST, "/api/v1/recetas"))
                         .hasRole("MEDICO")
                         .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.PATCH, "/api/v1/recetas/*/estado"))
                         .hasRole("FARMACEUTICO")
                         .anyRequest().authenticated())
                 .exceptionHandling(ex -> ex
-                        // Sin token (o token inválido) -> 401 en vez del 403 por defecto
+
                         .authenticationEntryPoint((request, response, authException) -> {
                             response.setStatus(HttpStatus.UNAUTHORIZED.value());
                             response.setContentType(MediaType.APPLICATION_PROBLEM_JSON_VALUE);
@@ -85,7 +84,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    /** CORS global: permite el frontend Angular (4200) incluyendo la cabecera Authorization. */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();

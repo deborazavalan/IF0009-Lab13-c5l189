@@ -9,7 +9,6 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    // Registra el interceptor que agrega "Authorization: Bearer <token>" a cada petición
     provideHttpClient(withInterceptors([authInterceptor])),
   ],
 };

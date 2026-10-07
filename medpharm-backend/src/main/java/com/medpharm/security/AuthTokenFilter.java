@@ -14,10 +14,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-/** Extrae "Authorization: Bearer <token>", valida el JWT y establece el contexto de seguridad. */
 @Component
 public class AuthTokenFilter extends OncePerRequestFilter {
-
     private final JwtUtils jwtUtils;
     private final UserDetailsService userDetailsService;
 
@@ -42,7 +40,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 autenticacion.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(autenticacion);
             } catch (Exception e) {
-                // Usuario inexistente o token inconsistente: se deja la petición sin autenticar (-> 401)
                 SecurityContextHolder.clearContext();
             }
         }

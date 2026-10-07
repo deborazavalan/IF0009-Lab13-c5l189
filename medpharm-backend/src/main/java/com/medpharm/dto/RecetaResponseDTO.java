@@ -7,7 +7,6 @@ import java.util.List;
 
 public record RecetaResponseDTO(Long id, String codigoReceta, String pacienteNombre, String medicoNombre,
                                 String estado, LocalDateTime fechaEmision, List<DetalleResponseDTO> detalles) {
-
     public static RecetaResponseDTO desde(RecetaMedica r) {
         return new RecetaResponseDTO(
                 r.getId(),

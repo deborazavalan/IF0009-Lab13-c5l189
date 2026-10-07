@@ -11,7 +11,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/medicamentos")
 public class MedicamentoController {
-
     private final MedicamentoRepository medicamentoRepository;
 
     public MedicamentoController(MedicamentoRepository medicamentoRepository) {

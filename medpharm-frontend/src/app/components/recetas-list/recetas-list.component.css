@@ -73,7 +73,6 @@
 
 .acciones { display: flex; gap: 8px; flex-wrap: wrap; }
 
-/* ---------- Responsive: la tabla se apila como tarjetas ---------- */
 @media (max-width: 760px) {
   .tabla thead { display: none; }
 

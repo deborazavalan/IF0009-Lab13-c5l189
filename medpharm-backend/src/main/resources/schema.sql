@@ -1,6 +1,3 @@
--- MedPharm Express - Esquema H2 (en memoria)
--- Los nombres de columnas siguen la convencion de Spring (camelCase -> snake_case)
-
 DROP TABLE IF EXISTS detalles_receta;
 DROP TABLE IF EXISTS recetas;
 DROP TABLE IF EXISTS medicamentos;

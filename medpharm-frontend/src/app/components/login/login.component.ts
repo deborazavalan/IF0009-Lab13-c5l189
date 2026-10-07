@@ -25,7 +25,6 @@ export class LoginComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    // Si ya hay sesión activa, no tiene sentido mostrar el login
     if (this.auth.estaAutenticado()) {
       this.router.navigate(['/recetas']);
     }

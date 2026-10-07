@@ -14,7 +14,6 @@ interface Sesion {
 
 const CLAVE_SESION = 'medpharm_sesion';
 
-/** Gestiona el login, el logout y el token JWT (guardado en localStorage). */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly http = inject(HttpClient);
@@ -22,7 +21,6 @@ export class AuthService {
 
   private readonly _sesion = signal<Sesion | null>(this.leerSesion());
 
-  /** Sesión actual expuesta como signal de solo lectura. */
   readonly sesion = this._sesion.asReadonly();
   readonly estaAutenticado = computed(() => !!this._sesion()?.token);
   readonly username = computed(() => this._sesion()?.username ?? '');

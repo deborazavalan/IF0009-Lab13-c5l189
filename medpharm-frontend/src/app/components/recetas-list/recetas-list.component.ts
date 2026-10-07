@@ -21,14 +21,12 @@ export class RecetasListComponent implements OnInit {
 
   protected readonly filtros: FiltroEstado[] = ['TODAS', 'PENDIENTE', 'DESPACHADA', 'CANCELADA'];
 
-  /** Estado reactivo con Angular Signals */
   protected readonly recetas = signal<Receta[]>([]);
   protected readonly filtro = signal<FiltroEstado>('TODAS');
   protected readonly cargando = signal(true);
   protected readonly errorMensaje = signal<string | null>(null);
   protected readonly procesandoId = signal<number | null>(null);
 
-  /** Lista derivada: se recalcula sola cuando cambian las recetas o el filtro */
   protected readonly recetasFiltradas = computed(() => {
     const estado = this.filtro();
     return estado === 'TODAS' ? this.recetas() : this.recetas().filter((r) => r.estado === estado);
@@ -67,7 +65,6 @@ export class RecetasListComponent implements OnInit {
     return filtro === 'TODAS' ? this.recetas().length : this.recetas().filter((r) => r.estado === filtro).length;
   }
 
-  /** PATCH /recetas/{id}/estado y actualiza solo la fila afectada en el signal. */
   protected cambiarEstado(receta: Receta, estado: EstadoReceta): void {
     this.procesandoId.set(receta.id);
     this.errorMensaje.set(null);

@@ -19,14 +19,8 @@ import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * Manejo centralizado de excepciones con el formato RFC 7807 (application/problem+json).
- * Extiende ResponseEntityExceptionHandler para que las excepciones estándar de Spring MVC
- * (JSON malformado, ruta inexistente, método no permitido...) también salgan como ProblemDetail.
- */
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
-
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     @ExceptionHandler(RecursoNoEncontradoException.class)
@@ -62,7 +56,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 "Ocurrió un error inesperado en el servidor.", "error-interno");
     }
 
-    /** Errores de Bean Validation (@Valid): devuelve el detalle por campo en la propiedad "errores". */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                   HttpHeaders headers,

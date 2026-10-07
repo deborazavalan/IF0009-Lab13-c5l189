@@ -10,11 +10,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
-/** Renglón de medicamento prescrito dentro de una receta. */
 @Entity
 @Table(name = "detalles_receta")
 public class DetalleReceta {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -8,10 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-/** Carga el usuario desde H2 para que Spring Security lo autentique. */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-
     private final UsuarioRepository usuarioRepository;
 
     public UserDetailsServiceImpl(UsuarioRepository usuarioRepository) {
@@ -25,7 +23,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         return User.withUsername(usuario.getUsername())
                 .password(usuario.getPassword())
-                .roles(usuario.getRol()) // genera la autoridad ROLE_MEDICO / ROLE_FARMACEUTICO
+                .roles(usuario.getRol())
                 .build();
     }
 }

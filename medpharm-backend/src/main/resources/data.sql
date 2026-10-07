@@ -1,6 +1,3 @@
--- MedPharm Express - Datos iniciales
--- Passwords en BCrypt:  medico123  /  farma123
-
 INSERT INTO usuarios (username, password, nombre_completo, rol) VALUES
 ('dra.salas',  '$2a$10$jCwrUIGDBgGCUvJYB/IsxuwI9I12fu/.cEep0hDrIDli.IpgGx4TO', 'Dra. Laura Salas Mora',     'MEDICO'),
 ('dr.vargas',  '$2a$10$jCwrUIGDBgGCUvJYB/IsxuwI9I12fu/.cEep0hDrIDli.IpgGx4TO', 'Dr. Andrés Vargas Quesada', 'MEDICO'),

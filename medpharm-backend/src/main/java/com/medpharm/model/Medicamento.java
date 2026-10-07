@@ -9,11 +9,9 @@ import jakarta.persistence.Table;
 
 import java.math.BigDecimal;
 
-/** Catálogo de medicinas. */
 @Entity
 @Table(name = "medicamentos")
 public class Medicamento {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

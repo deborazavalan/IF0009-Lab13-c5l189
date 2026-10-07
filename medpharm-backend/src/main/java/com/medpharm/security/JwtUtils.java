@@ -12,10 +12,8 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
-/** Genera, lee y valida tokens JWT firmados con HMAC-SHA256. */
 @Component
 public class JwtUtils {
-
     private static final Logger log = LoggerFactory.getLogger(JwtUtils.class);
 
     private final SecretKey key;
@@ -46,7 +44,6 @@ public class JwtUtils {
                 .getSubject();
     }
 
-    /** Valida la firma y la expiración del token. */
     public boolean validarToken(String token) {
         try {
             Jwts.parser().verifyWith(key).build().parseSignedClaims(token);

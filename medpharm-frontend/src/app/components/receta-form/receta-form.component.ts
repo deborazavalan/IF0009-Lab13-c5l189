@@ -25,7 +25,6 @@ export class RecetaFormComponent implements OnInit {
   protected readonly enviando = signal(false);
   protected readonly errorMensaje = signal<string | null>(null);
 
-  /** Formulario anidado: FormGroup con un FormArray de renglones de medicamento. */
   protected readonly form = this.fb.nonNullable.group({
     pacienteNombre: ['', [Validators.required, Validators.minLength(5)]],
     detalles: this.fb.array([this.crearDetalle()]),

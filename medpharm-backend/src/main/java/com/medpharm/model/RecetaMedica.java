@@ -16,11 +16,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Encabezado de la receta médica. */
 @Entity
 @Table(name = "recetas")
 public class RecetaMedica {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -35,7 +33,6 @@ public class RecetaMedica {
     @JoinColumn(name = "medico_id", nullable = false)
     private Usuario medico;
 
-    /** PENDIENTE, DESPACHADA o CANCELADA. */
     @Column(nullable = false)
     private String estado;
 
@@ -48,7 +45,6 @@ public class RecetaMedica {
     public RecetaMedica() {
     }
 
-    /** Mantiene sincronizados ambos lados de la relación. */
     public void agregarDetalle(DetalleReceta detalle) {
         detalle.setReceta(this);
         this.detalles.add(detalle);

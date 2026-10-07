@@ -26,7 +26,6 @@ import java.util.UUID;
 
 @Service
 public class RecetaService {
-
     public static final String PENDIENTE = "PENDIENTE";
     public static final String DESPACHADA = "DESPACHADA";
     public static final String CANCELADA = "CANCELADA";
@@ -60,13 +59,11 @@ public class RecetaService {
                 .toList();
     }
 
-    /** Registra una receta nueva validando que exista stock suficiente de cada medicamento. */
     @Transactional
     public RecetaResponseDTO crear(RecetaRequestDTO dto, String usernameMedico) {
         Usuario medico = usuarioRepository.findByUsername(usernameMedico)
                 .orElseThrow(() -> new RecursoNoEncontradoException("Médico no encontrado: " + usernameMedico));
 
-        // Si un medicamento aparece en varios renglones, se suman las cantidades para validar el stock
         Map<Long, Integer> cantidadPorMedicamento = new LinkedHashMap<>();
         for (DetalleRequestDTO d : dto.detalles()) {
             cantidadPorMedicamento.merge(d.medicamentoId(), d.cantidad(), Integer::sum);
@@ -103,7 +100,6 @@ public class RecetaService {
         return RecetaResponseDTO.desde(recetaRepository.save(receta));
     }
 
-    /** Cambia el estado de una receta PENDIENTE a DESPACHADA o CANCELADA. */
     @Transactional
     public RecetaResponseDTO cambiarEstado(Long id, String nuevoEstado) {
         String estado = normalizarEstado(nuevoEstado);
@@ -121,7 +117,6 @@ public class RecetaService {
         }
 
         if (DESPACHADA.equals(estado)) {
-            // Al despachar se descuenta el inventario (revalidando el stock actual)
             for (DetalleReceta d : receta.getDetalles()) {
                 Medicamento m = d.getMedicamento();
                 if (d.getCantidad() > m.getStock()) {

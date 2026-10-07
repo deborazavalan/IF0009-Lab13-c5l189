@@ -5,10 +5,6 @@ import { catchError, throwError } from 'rxjs';
 import { API_URL } from '../app.constants';
 import { AuthService } from '../services/auth.service';
 
-/**
- * Clona cada petición saliente hacia la API e inyecta la cabecera
- * "Authorization: Bearer <token>" cuando existe una sesión activa.
- */
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
   const token = authService.getToken();
@@ -23,7 +19,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(peticion).pipe(
     catchError((error: HttpErrorResponse) => {
-      // Token vencido o inválido: se cierra la sesión y se envía al login
       if (error.status === 401 && token && !esLogin) {
         authService.logout();
       }
