@@ -1,15 +1,12 @@
-# Java / Maven
 medpharm-backend/target/
 *.class
 *.log
 
-# Node / Angular
 medpharm-frontend/node_modules/
 medpharm-frontend/dist/
 medpharm-frontend/.angular/
 npm-debug.log*
 
-# IDEs
 .idea/
 *.iml
 .vscode/
